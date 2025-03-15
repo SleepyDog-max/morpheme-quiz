@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Morpheme Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #84fab0, #8fd3f4);
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        h1 {
+            text-align: center;
+            color: #d81b60;
+            font-size: 2.5em;
+            text-shadow: 1px 1px 2px #fff;
+        }
+        .quiz-section {
+            display: none;
+            padding: 20px;
+            background: #f8a5c2;
+            border-radius: 10px;
+            color: #1a1a1a;
+        }
+        .quiz-section.active {
+            display: block;
+        }
+        .question {
+            font-size: 1.2em;
+            margin-bottom: 15px;
+        }
+        .options label {
+            display: block;
+            margin: 10px 0;
+            padding: 10px;
+            background: #fffde7;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .options label:hover {
+            background: #f3a683;
+        }
+        input[type="radio"] {
+            margin-right: 10px;
+        }
+        .nav-buttons {
+            margin-top: 20px;
+            text-align: center;
+        }
+        button {
+            background: #546de5;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            margin: 0 10px;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #3d4b99;
+        }
+        #summary {
+            display: none;
+            padding: 20px;
+            background: #f9dbbd;
+            border-radius: 10px;
+            color: #1a1a1a;
+        }
+        #summary.active {
+            display: block;
+        }
+        #summary h2 {
+            color: #d81b60;
+        }
+        .explanation {
+            margin: 15px 0;
+            padding: 10px;
+            background: #fffde7;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Morpheme Quiz</h1>
+
+        <!-- Question 1 -->
+        <div id="q1" class="quiz-section active">
+            <div class="question">1. What is a morpheme?</div>
+            <div class="options">
+                <label><input type="radio" name="q1" value="a"> a) The smallest unit of sound in a language</label>
+                <label><input type="radio" name="q1" value="b"> b) The smallest unit of meaning in a language</label>
+                <label><input type="radio" name="q1" value="c"> c) A type of sentence structure</label>
+            </div>
+            <div class="nav-buttons">
+                <button disabled>Previous</button>
+                <button onclick="nextQuestion(1)">Next</button>
+            </div>
+        </div>
+
+        <!-- Question 2 (Updated and Made More Challenging) -->
+        <div id="q2" class="quiz-section">
+            <div class="question">2. How many morphemes are in the word "misunderstanding"?</div>
+            <div class="options">
+                <label><input type="radio" name="q2" value="a"> a) 2</label>
+                <label><input type="radio" name="q2" value="b"> b) 3</label>
+                <label><input type="radio" name="q2" value="c"> c) 4</label>
+            </div>
+            <div class="nav-buttons">
+                <button onclick="prevQuestion(2)">Previous</button>
+                <button onclick="nextQuestion(2)">Next</button>
+            </div>
+        </div>
+
+        <!-- Question 3 (Made More Challenging) -->
+        <div id="q3" class="quiz-section">
+            <div class="question">3. How many morphemes are in the word "anticonstitutionally"?</div>
+            <div class="options">
+                <label><input type="radio" name="q3" value="a"> a) 3</label>
+                <label><input type="radio" name="q3" value="b"> b) 4</label>
+                <label><input type="radio" name="q3" value="c"> c) 5</label>
+            </div>
+            <div class="nav-buttons">
+                <button onclick="prevQuestion(3)">Previous</button>
+                <button onclick="showSummary()">Submit</button>
+            </div>
+        </div>
+
+        <!-- Summary Section -->
+        <div id="summary">
+            <h2>Quiz Summary</h2>
+            <p id="score"></p>
+            <div class="explanation">
+                <strong>Question 1: What is a morpheme?</strong><br>
+                <em>Correct Answer:</em> b) The smallest unit of meaning in a language<br>
+                A morpheme is the smallest grammatical unit that carries meaning, like "un-" or "dog."
+            </div>
+            <div class="explanation">
+                <strong>Question 2: How many morphemes are in the word "misunderstanding"?</strong><br>
+                <em>Correct Answer:</em> c) 4<br>
+                "Misunderstanding" breaks into four morphemes: "mis-" (prefix, meaning wrong), "under-" (prefix, meaning below or not fully), "stand" (root), and "-ing" (suffix, indicating a gerund).
+            </div>
+            <div class="explanation">
+                <strong>Question 3: How many morphemes are in the word "anticonstitutionally"?</strong><br>
+                <em>Correct Answer:</em> c) 5<br>
+                "Anticonstitutionally" breaks into five morphemes: "anti-" (prefix, meaning against), "con-" (prefix, meaning together), "stitut" (root, from Latin "to set up"), "-ion" (suffix, forming a noun), and "-ally" (suffix, forming an adverb).
+            </div>
+            <button onclick="restartQuiz()">Restart Quiz</button>
+        </div>
+    </div>
+
+    <script>
+        let currentQuestion = 1;
+        const totalQuestions = 3;
+        const answers = {
+            q1: 'b', // Correct answer for Q1
+            q2: 'c', // Correct answer for Q2 (4 morphemes)
+            q3: 'c'  // Correct answer for Q3 (5 morphemes)
+        };
+
+        function nextQuestion(current) {
+            document.getElementById(`q${current}`).classList.remove('active');
+            currentQuestion = current + 1;
+            document.getElementById(`q${currentQuestion}`).classList.add('active');
+        }
+
+        function prevQuestion(current) {
+            document.getElementById(`q${current}`).classList.remove('active');
+            currentQuestion = current - 1;
+            document.getElementById(`q${currentQuestion}`).classList.add('active');
+        }
+
+        function showSummary() {
+            let score = 0;
+
+            // Check answers
+            for (let i = 1; i <= totalQuestions; i++) {
+                const selected = document.querySelector(`input[name="q${i}"]:checked`);
+                if (selected && selected.value === answers[`q${i}`]) {
+                    score++;
+                }
+            }
+
+            // Show summary
+            document.getElementById(`q${currentQuestion}`).classList.remove('active');
+            document.getElementById('summary').classList.add('active');
+            document.getElementById('score').innerHTML = `Your Score: ${score} out of ${totalQuestions}`;
+        }
+
+        function restartQuiz() {
+            // Reset all radio buttons
+            document.querySelectorAll('input[type="radio"]').forEach(input => input.checked = false);
+            // Hide summary and show first question
+            document.getElementById('summary').classList.remove('active');
+            currentQuestion = 1;
+            document.getElementById('q1').classList.add('active');
+        }
+    </script>
+</body>
+</html>
